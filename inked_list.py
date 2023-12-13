@@ -2,117 +2,117 @@
 
 class Node:
     def __init__(self, data):
-        self.data = data
-        self.prev = None
-        self.next = None
+        self.__data = data
+        self.__prev = None
+        self.__next = None
 
 
 class LinkedList:
-    # arajin metods
     def __init__(self):
-        self.start = None
-    #erkrod metods
+        self.__start = None
+
     def append(self, data):
-        if not self.start:
-            self.start = Node(data)
+        if not self.__start:
+            self.__start = Node(data)
             return
 
-        last = self.start
-        while last.next is not None:
-            last = last.next
+        last = self.__start
+        while last.__next is not None:
+            last = last.__next
 
         tmp_node = Node(data)
-        last.next = tmp_node
-        tmp_node.prev = last
+        last.__next = tmp_node
+        tmp_node.__prev = last
 
-    # errord metods
     def display(self):
-        current = self.start
+        current = self.__start
         while current is not None:
-            print(current.data)
-            current = current.next
+            print(current.__data)
+            current = current.__next
 
-    # 4 metods
     def is_empty(self) -> bool:
-        return not self.start
+        return not self.__start
 
-    # 5 metods
     def prepend(self, data):
-        if not self.start:
-            self.start = Node(data)
+        if not self.__start:
+            self.__start = Node(data)
             return
 
         tmp_node = Node(data)
-        tmp_node.next = self.start
-        self.start.prev = tmp_node
-        self.start = tmp_node
+        tmp_node.__next = self.__start
+        self.__start.__prev = tmp_node
+        self.__start = tmp_node
 
-    #6 metods
     def insert_after(self, target_data, data):
         if self.is_empty():
             raise ValueError("The list is empty!")
 
-        found = self.start
+        found = self.__start
         while found is not None:
-            if found.data == target_data:
+            if found.__data == target_data:
                 break
-            found = found.next
+            found = found.__next
 
         if not found:
             raise ValueError(f"There is no element in the list: {data}!")
 
         tmp_node = Node(data)
-        found_last = True if not found.next else False
+        found_last = True if not found.__next else False
         if found_last:
-            found.next = tmp_node
-            tmp_node.prev = found
+            found.__next = tmp_node
+            tmp_node.__prev = found
         else:
-            tmp_node.prev = found
-            tmp_node.next = found.next
-            found.next.prev = tmp_node
-            found.next = tmp_node
-    #7 metods
+            tmp_node.__prev = found
+            tmp_node.__next = found.__next
+            found.__next.__prev = tmp_node
+            found.__next = tmp_node
+
     def insert_before(self, target_data, data):
         if self.is_empty():
             raise ValueError("The list is empty!")
 
-        found = self.start
+        found = self.__start
         while found is not None:
-            if found.data == target_data:
+            if found.__data == target_data:
                 break
-            found = found.next
+            found = found.__next
 
         if not found:
             raise ValueError(f"There is no element in the list: {data}!")
 
         tmp_node = Node(data)
-        if found is self.start:
+        if found is self.__start:
             self.prepend(data)
         else:
-            tmp_node.next = found
-            tmp_node.prev = found.prev
-            found.prev.next = tmp_node
-            found.prev = tmp_node
-    # 8 metods
+            tmp_node.__next = found
+            tmp_node.__prev = found.__prev
+            found.__prev.__next = tmp_node
+            found.__prev = tmp_node
+
     def delete(self, data):
         if self.is_empty():
             raise ValueError("The list is empty!")
 
-        found = self.start
+        found = self.__start
         while found is not None:
-            if found.data == data:
+            if found.__data == data:
                 break
-            found = found.next
+            found = found.__next
 
         if not found:
             raise ValueError(f"There is no element in the list: {data}!")
 
-        if found is self.start:
-            if found.next is None:
-                self.start = None
+        if found is self.__start:
+            if found.__next is None:
+                self.__start = None
             else:
-                self.start = self.start.next
+                self.__start = self.__start.__next
             return
+
+        left, right = found.__prev, found.__next
+        left.__next = right
+        right.__prev = left
+
 
         left, right = found.prev, found.next
         left.next = right
